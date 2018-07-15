@@ -77,6 +77,7 @@ abstract class BeanQuery {
      * @return $this
      */
     public function where($whereCond, $params = null) {
+		var_dump(func_get_args());
         $this->sqlQuery->where($whereCond, $params);
         return $this;
     }
@@ -176,7 +177,7 @@ abstract class BeanQuery {
     }
 
     public function query() {
-        print_r($this->getDebugString());
+      //  print_r($this->getDebugString());
         return $this->sqlQuery->query();
     }
    

@@ -9,7 +9,7 @@ class PgSqlQuery extends SqlQuery {
     }
 
     public function getColumnEscapeChar() {
-        
+        return '"';
     }
 
     public function getSqlString() {

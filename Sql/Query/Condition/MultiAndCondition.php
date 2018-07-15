@@ -1,6 +1,6 @@
 <?php
 
-namespace PhpLibs\Sql\Query;
+namespace PhpLibs\Sql\Query\Condition;
 
 class MultiAndCondition extends Condition {
 

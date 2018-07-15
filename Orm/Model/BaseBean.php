@@ -18,7 +18,7 @@ abstract class BaseBean {
         
     }
 
-    public function isLoaded(): bool {
+    public function isLoaded() {
         return $this->loaded;
     }
 
@@ -30,15 +30,15 @@ abstract class BaseBean {
         $this->insert = true;
     }
 
-    public function isInsertNew() : bool {
+    public function isInsertNew()  {
         return $this->insert;
     }
 
-    public function isAutoIncrement() : bool  {
+    public function isAutoIncrement()   {
         return $this->autoIncrement;
     }
 
-    public function isPrimaryKeyModified() : bool  {
+    public function isPrimaryKeyModified()   {
         return $this->primaryKeyModified;
     }
 
@@ -46,5 +46,5 @@ abstract class BaseBean {
         $this->primaryKeyModified = $primaryKeyModified;
     }
 
-    public abstract function hasUpdate() : bool;
+    public abstract function hasUpdate() ;
 }

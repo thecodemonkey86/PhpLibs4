@@ -18,6 +18,11 @@ abstract class AbstractController {
         $this->view->update($this->run());
     }
         
+    public function redirect($location) {
+        header('Location: ' . $location);
+        die;
+    }
+    
     /**
      * @return \PhpLibs\Mvc\ViewData\ViewData data
      */

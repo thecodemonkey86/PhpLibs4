@@ -2,14 +2,15 @@
 
 namespace PhpLibs\Sql\Query;
 
-class MySqlQuery extends SqlQuery {
+class FirebirdSqlQuery extends SqlQuery {
 
     public function __construct($sqlCon) {
         parent::__construct($sqlCon);
     }
 
+    // TODO
     public function getColumnEscapeChar() {
-        return '`';
+        return '"';
     }
 
     public function getSqlString() {
@@ -108,39 +109,21 @@ class MySqlQuery extends SqlQuery {
 
     public function query() {
         $params = $this->getParams();
-        if (count($params) > 0) {
-            $stmt = $this->sqlCon->prepare($this->getSqlString());
-            if (!$stmt) {
-                $this->throwException();
-            }
-
-            $type = '';
-            if ($this->paramsJoin != null) {
-                $type .= $this->getParamTypes($this->paramsJoin);
-            }
-            if ($this->paramsSetValue != null) {
-                $type .= $this->getParamTypes($this->paramsSetValue);
-            }
-            if ($this->paramsWhere != null) {
-                $type .= $this->getParamTypes($this->paramsWhere);
-            }
-            $stmt->bind_param($type, ...$params);
-            $stmt->execute();
-            $result = $stmt->get_result();
-            $stmt->close();
-            return $result;
+        if (count($params) > 0) {			
+            $stmt = ibase_prepare($this->sqlCon, $this->getSqlString());
+			array_unshift($params, $stmt);
+            return call_user_func_array('ibase_execute', $params);
         } else {
-            $query = $this->sqlCon->query($this->getSqlString());
-            return $query;
+             return ibase_query($this->sqlCon, $this->getSqlString());
         }
     }
 
     public function fetchAssoc() {
-        $res = $this->query();
+        $res = ibase_query($this->sqlCon, $this->getSqlString());
         if (!$res) {
             $this->throwException();
         }
-        return $res->fetch_all(MYSQLI_ASSOC);
+        return ibase_fetch_assoc($res);
     }
 
     public function supportsMultiRowInsert() {

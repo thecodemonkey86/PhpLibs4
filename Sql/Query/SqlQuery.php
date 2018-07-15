@@ -298,8 +298,13 @@ abstract class SqlQuery {
 
     public abstract function getSqlString();
 
+    // TODO
     public abstract function getColumnEscapeChar();
 
+    public function getEscapedColumName($col) {
+        return sprintf('%s%s%s', $this->getColumnEscapeChar(), $col,$this->getColumnEscapeChar() );
+    }
+    
     public function beginTransaction() {
         
     }
