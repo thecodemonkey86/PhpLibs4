@@ -76,8 +76,7 @@ abstract class BeanQuery {
      * @param mixed $params
      * @return $this
      */
-    public function where($whereCond, $params = null) {
-		var_dump(func_get_args());
+    public function where($whereCond, $params = null) {		
         $this->sqlQuery->where($whereCond, $params);
         return $this;
     }
