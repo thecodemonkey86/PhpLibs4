@@ -165,7 +165,7 @@ abstract class SqlQuery {
     }
 
     public function where($whereCond, $params = null) {
-        $this->conditions[] = ($whereCond);
+        $this->conditions[] = $whereCond;
         $this->addParamsWhere($params);
         return $this;
     }
@@ -205,16 +205,13 @@ abstract class SqlQuery {
         return $this;
     }
 
-    public function andWhere(Condition $cond1, Condition $cond2, $params = null) {
-        $this->conditions[] = new AndCondition($cond1, $cond2);
-        $this->addParamsWhere($params);
-        return $this;
+    public function logicalAnd($cond1, $cond2) {
+        return new AndCondition($cond1, $cond2);
+        
     }
 
-    public function orWhere(Condition $cond1, Condition $cond2, $params = null) {
-        $this->conditions[] = new OrCondition($cond1, $cond2);
-        $this->addParamsWhere($params);
-        return $this;
+    public function logicalOr($cond1, $cond2) {      
+        return new OrCondition($cond1, $cond2);
     }
 
     public function orderBy(string $order, string $direction = self::ORDER_BY_ASC) {
