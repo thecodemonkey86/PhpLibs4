@@ -15,5 +15,13 @@ class AndCondtion extends Condition {
     public function __toString() {
         return sprintf('%s AND %s', $this->cond1, $this->cond2);
     }
+	
+	public function logicalAnd($cond) {
+		return new AndCondition($this, $cond);
+	}
+	
+	public function logicalOr($cond) {
+		return new OrCondition($this, $cond);
+	}
 
 }

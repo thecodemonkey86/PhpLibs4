@@ -110,7 +110,7 @@ abstract class BeanQuery {
      * @param mixed $cond1
      * @param mixed $cond2
      * @param mixed $params
-     * @return $this
+     * @return AndCondition
      */
     public function logicalAnd($cond1, $cond2) {
         return $this->sqlQuery->logicalAnd($cond1, $cond2);       
@@ -121,7 +121,7 @@ abstract class BeanQuery {
      * @param mixed $cond1
      * @param mixed $cond2
      * @param mixed $params
-     * @return $this
+     * @return OrCondition
      */
     public function logicalOr($cond1, $cond2) {
         return $this->sqlQuery->logicalOr($cond1, $cond2);      
