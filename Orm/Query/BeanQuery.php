@@ -113,8 +113,7 @@ abstract class BeanQuery {
      * @return $this
      */
     public function logicalAnd($cond1, $cond2) {
-        $this->sqlQuery->logicalAnd($cond1, $cond2);
-        return $this;
+        return $this->sqlQuery->logicalAnd($cond1, $cond2);       
     }
 
     /**
@@ -125,8 +124,7 @@ abstract class BeanQuery {
      * @return $this
      */
     public function logicalOr($cond1, $cond2) {
-        $this->sqlQuery->logicalOr($cond1, $cond2);
-        return $this;
+        return $this->sqlQuery->logicalOr($cond1, $cond2);      
     }
 
     /**
