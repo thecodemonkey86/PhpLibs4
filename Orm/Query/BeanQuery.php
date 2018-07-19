@@ -72,11 +72,11 @@ abstract class BeanQuery {
 
     /**
      * 
-     * @param mixed $whereCond
+     * @param string $whereCond
      * @param mixed $params
      * @return $this
      */
-    public function where($whereCond, $params = null) {		
+    public function where($whereCond, $params = null) {
         $this->sqlQuery->where($whereCond, $params);
         return $this;
     }
@@ -107,24 +107,26 @@ abstract class BeanQuery {
 
     /**
      * 
-     * @param mixed $cond1
-     * @param mixed $cond2
+     * @param \Orm\Condition $cond1
+     * @param \Orm\Condition $cond2
      * @param mixed $params
-     * @return AndCondition
+     * @return $this
      */
-    public function logicalAnd($cond1, $cond2) {
-        return $this->sqlQuery->logicalAnd($cond1, $cond2);       
+    public function andWhere(Condition $cond1, Condition $cond2, $params = null) {
+        $this->sqlQuery->andWhere($cond1, $cond2, $params);
+        return $this;
     }
 
     /**
      * 
-     * @param mixed $cond1
-     * @param mixed $cond2
+     * @param \Orm\Condition $cond1
+     * @param \Orm\Condition $cond2
      * @param mixed $params
-     * @return OrCondition
+     * @return $this
      */
-    public function logicalOr($cond1, $cond2) {
-        return $this->sqlQuery->logicalOr($cond1, $cond2);      
+    public function orWhere(Condition $cond1, Condition $cond2, $params = null) {
+        $this->sqlQuery->andWhere($cond1, $cond2, $params);
+        return $this;
     }
 
     /**
