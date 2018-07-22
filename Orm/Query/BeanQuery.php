@@ -213,7 +213,8 @@ abstract class BeanQuery {
     }
 	
 	public function delete() {
-		$this->sqlQuery->deleteFrom($this->getTableName());
+		$this->sqlQuery->deleteFrom($this->getTableName(). ' b1');
+		return $this;
 	}
 
 }

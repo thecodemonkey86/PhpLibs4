@@ -136,28 +136,12 @@ class FirebirdSqlQuery extends SqlQuery {
 
     public function execute(): bool {
         $params = $this->getParams();
-        if (count($params) > 0) {
-            $stmt = $this->sqlCon->prepare($this->getSqlString());
-            if (!$stmt) {
-                $this->throwException();
-            }
-
-            $type = '';
-            if ($this->paramsJoin != null) {
-                $type .= $this->getParamTypes($this->paramsJoin);
-            }
-            if ($this->paramsSetValue != null) {
-                $type .= $this->getParamTypes($this->paramsSetValue);
-            }
-            if ($this->paramsWhere != null) {
-                $type .= $this->getParamTypes($this->paramsWhere);
-            }
-            $stmt->bind_param($type, ...$params);
-            $result = $stmt->execute();
-            $stmt->close();
-            return $result;
+        if (count($params) > 0) {			
+            $stmt = ibase_prepare($this->sqlCon, $this->getSqlString());
+			array_unshift($params, $stmt);
+            return call_user_func_array('ibase_execute', $params);
         } else {
-            return $this->sqlCon->execute($this->getSqlString());
+             return ibase_query($this->sqlCon, $this->getSqlString());
         }
     }
 
