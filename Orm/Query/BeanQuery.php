@@ -216,5 +216,9 @@ abstract class BeanQuery {
 		$this->sqlQuery->deleteFrom($this->getTableName(). ' b1');
 		return $this;
 	}
+        
+        public function addInsertRawExpression($expression) {
+            $this->sqlQuery->addInsertRawExpression($expression);
+        }
 
 }
