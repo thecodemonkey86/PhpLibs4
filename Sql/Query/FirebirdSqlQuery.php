@@ -19,7 +19,8 @@ class FirebirdSqlQuery extends SqlQuery {
             case self::MODE_INSERT:
                 switch ($this->submode) {
                     case self::SUBMODE_NONE:
-                        $sql = sprintf('insert into %s (%s) values %s', $this->table, implode(',', $this->insertUpdateColumns), \PhpLibs\Sql\Util\SqlUtil::getPlaceholders(count($this->insertUpdateColumns)));
+                        $sql = sprintf('insert into %s (%s) values %s', $this->table, implode(',', ($this->insertRawValues? array_merge($this->insertUpdateColumns,$this->insertUpdateRawValuesColumns) : $this->insertUpdateColumns)), ($this->insertRawValues?\PhpLibs\Sql\Util\SqlUtil::getPlaceholdersAndRawValues(count($this->paramsSetValue), $this->insertRawValues) :\PhpLibs\Sql\Util\SqlUtil::getPlaceholders(count($this->insertUpdateColumns))));
+                           var_dump($sql);
                         break;
                     case self::SUBMODE_MULTIROW:
                         $sql = sprintf('insert into %s (%s) values %s', $this->table, implode(',', $this->insertUpdateColumns), substr(str_repeat(',' . \PhpLibs\Sql\Util\SqlUtil::getPlaceholders(count($this->insertUpdateColumns)), $this->insertOrUpdateRowCount), 1));
@@ -83,7 +84,7 @@ class FirebirdSqlQuery extends SqlQuery {
         return $sql;
     }
 
-    private function getParamTypes(array &$params) {
+    /*private function getParamTypes(array &$params) {
         $type = '';
         if ($params !== null) {
             foreach ($params as $param) {
@@ -105,7 +106,7 @@ class FirebirdSqlQuery extends SqlQuery {
             }
         }
         return $type;
-    }
+    }*/
 
     public function query() {
         $params = $this->getParams();

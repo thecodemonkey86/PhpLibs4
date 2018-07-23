@@ -37,6 +37,8 @@ abstract class SqlQuery {
     protected $onConflictUpdateColumns;
     protected $insertOrUpdateRowCount;
     protected $onConflict;
+    protected $insertRawValues;
+    protected $insertUpdateRawValuesColumns;
 
     public function __construct($sqlCon) {
         if($sqlCon === null) {
@@ -124,6 +126,18 @@ abstract class SqlQuery {
         return $this;
     }
 
+    public function addInsertRawExpression($column, $expression) {
+        
+         if($this->insertRawValues === null) {
+             $this->insertUpdateRawValuesColumns = array($column);
+             $this->insertRawValues = array($expression);
+         } else {
+             $this->insertUpdateRawValuesColumns[] = $column;
+             $this->insertRawValues[] = $expression;
+         }
+      
+    }
+    
     public function addInsertColumn(string $column) {
         $this->insertUpdateColumns[] = $column;
         return $this;
@@ -349,5 +363,7 @@ abstract class SqlQuery {
         }
         return $params;
     }
+    
+    
 
 }
