@@ -1,6 +1,7 @@
 <?php
 
 namespace PhpLibs\Sql\Util;
+use PhpLibs\Util\StringUtil;
 
 class SqlUtil {
 
@@ -22,6 +23,14 @@ class SqlUtil {
         } else {
             return sprintf('(%s)', str_repeat('?,', $count).implode(',', $rawValues));
         }
+    }
+    
+     public static function debugSql($sql, $params) {
+        $s = $sql;
+        foreach ($params as $p) {
+            $s = StringUtil::replaceFirst('?', is_numeric($p) ? $p : '"'.$p.'"', $s);
+        }
+        var_dump($s); 
     }
     
 }

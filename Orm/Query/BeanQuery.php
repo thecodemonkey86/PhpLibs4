@@ -221,4 +221,8 @@ abstract class BeanQuery {
             $this->sqlQuery->addInsertRawExpression($expression);
         }
 
+        public function setTransactionHandle($transactionHandle) {
+            $this->sqlQuery->setTransactionHandle($transactionHandle);
+            return $this;
+        }
 }

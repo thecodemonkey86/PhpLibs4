@@ -294,17 +294,17 @@ abstract class SqlQuery {
        
         if ($this->paramsJoin != null) {
             foreach ($this->paramsJoin as $p) {
-                $sql = StringUtil::replaceFirst('?', $p, $sql);
+                $sql = StringUtil::replaceFirst('?', is_numeric($p) ? $p : '"'.$p.'"', $sql);
             }
         }
         if ($this->paramsSetValue != null) {
             foreach ($this->paramsSetValue as $p) {
-                $sql = StringUtil::replaceFirst('?', $p, $sql);
+                $sql = StringUtil::replaceFirst('?', is_numeric($p) ? $p : '"'.$p.'"', $sql);
             }
         }
         if ($this->paramsWhere != null) {
             foreach ($this->paramsWhere as $p) {
-                $sql = StringUtil::replaceFirst('?', $p, $sql);
+                $sql = StringUtil::replaceFirst('?', is_numeric($p) ? $p : '"'.$p.'"', $sql);
             }
         }
         return $sql;

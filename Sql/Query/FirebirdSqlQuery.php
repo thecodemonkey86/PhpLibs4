@@ -4,6 +4,8 @@ namespace PhpLibs\Sql\Query;
 
 class FirebirdSqlQuery extends SqlQuery {
 
+    protected $transactionHandle;
+
     public function __construct($sqlCon) {
         parent::__construct($sqlCon);
     }
@@ -19,7 +21,7 @@ class FirebirdSqlQuery extends SqlQuery {
             case self::MODE_INSERT:
                 switch ($this->submode) {
                     case self::SUBMODE_NONE:
-                        $sql = sprintf('insert into %s (%s) values %s', $this->table, implode(',', ($this->insertRawValues? array_merge($this->insertUpdateColumns,$this->insertUpdateRawValuesColumns) : $this->insertUpdateColumns)), ($this->insertRawValues?\PhpLibs\Sql\Util\SqlUtil::getPlaceholdersAndRawValues(count($this->paramsSetValue), $this->insertRawValues) :\PhpLibs\Sql\Util\SqlUtil::getPlaceholders(count($this->insertUpdateColumns))));
+                        $sql = sprintf('insert into %s (%s) values %s', $this->table, implode(',', ($this->insertRawValues ? array_merge($this->insertUpdateColumns, $this->insertUpdateRawValuesColumns) : $this->insertUpdateColumns)), ($this->insertRawValues ? \PhpLibs\Sql\Util\SqlUtil::getPlaceholdersAndRawValues(count($this->paramsSetValue), $this->insertRawValues) : \PhpLibs\Sql\Util\SqlUtil::getPlaceholders(count($this->insertUpdateColumns))));
                         break;
                     case self::SUBMODE_MULTIROW:
                         $sql = sprintf('insert into %s (%s) values %s', $this->table, implode(',', $this->insertUpdateColumns), substr(str_repeat(',' . \PhpLibs\Sql\Util\SqlUtil::getPlaceholders(count($this->insertUpdateColumns)), $this->insertOrUpdateRowCount), 1));
@@ -78,43 +80,44 @@ class FirebirdSqlQuery extends SqlQuery {
                 }
                 break;
             default:
+                print_r($this);
                 throw new \InvalidArgumentException();
         }
         return $sql;
     }
 
-    /*private function getParamTypes(array &$params) {
-        $type = '';
-        if ($params !== null) {
-            foreach ($params as $param) {
-                if (is_string($param)) {
-                    if (filter_var($param, FILTER_VALIDATE_INT)) {
-                        $type .= 'i';
-                    } else if (is_numeric($param)) {
-                        $type .= 'd';
-                    } else {
-                        $type .= 's';
-                    }
-                } else if (is_int($param)) {
-                    $type .= 'i';
-                } else if (is_float($param)) {
-                    $type .= 'd';
-                } else {
-                    $type .= $param->getType();
-                }
-            }
-        }
-        return $type;
-    }*/
+    /* private function getParamTypes(array &$params) {
+      $type = '';
+      if ($params !== null) {
+      foreach ($params as $param) {
+      if (is_string($param)) {
+      if (filter_var($param, FILTER_VALIDATE_INT)) {
+      $type .= 'i';
+      } else if (is_numeric($param)) {
+      $type .= 'd';
+      } else {
+      $type .= 's';
+      }
+      } else if (is_int($param)) {
+      $type .= 'i';
+      } else if (is_float($param)) {
+      $type .= 'd';
+      } else {
+      $type .= $param->getType();
+      }
+      }
+      }
+      return $type;
+      } */
 
     public function query() {
         $params = $this->getParams();
-        if (count($params) > 0) {			
-            $stmt = ibase_prepare($this->sqlCon, $this->getSqlString());
-			array_unshift($params, $stmt);
+        if (count($params) > 0) {
+            $stmt = ($this->transactionHandle !== null ?  ibase_prepare($this->sqlCon, $this->transactionHandle, $this->getSqlString()) : ibase_prepare($this->sqlCon, $this->getSqlString()));
+            array_unshift($params, $stmt);
             return call_user_func_array('ibase_execute', $params);
         } else {
-             return ibase_query($this->sqlCon, $this->getSqlString());
+            return ibase_query($this->sqlCon, $this->getSqlString());
         }
     }
 
@@ -136,13 +139,23 @@ class FirebirdSqlQuery extends SqlQuery {
 
     public function execute(): bool {
         $params = $this->getParams();
-        if (count($params) > 0) {			
-            $stmt = ibase_prepare($this->sqlCon, $this->getSqlString());
-			array_unshift($params, $stmt);
+        if (count($params) > 0) {
+            $stmt = null;
+            
+            if($this->transactionHandle !== null) {
+                $stmt = ibase_prepare($this->sqlCon, $this->transactionHandle, $this->getSqlString());
+            } else {
+                $stmt = ibase_prepare($this->sqlCon, $this->getSqlString());
+            }
+            array_unshift($params, $stmt);
             return call_user_func_array('ibase_execute', $params);
         } else {
-             return ibase_query($this->sqlCon, $this->getSqlString());
+            return ibase_query($this->sqlCon, $this->getSqlString());
         }
+    }
+
+    public function setTransactionHandle($transactionHandle) {
+        $this->transactionHandle = $transactionHandle;
     }
 
 }
