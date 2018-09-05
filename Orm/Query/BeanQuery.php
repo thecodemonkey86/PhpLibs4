@@ -18,6 +18,19 @@ abstract class BeanQuery {
      */
     protected $sqlQuery;
 
+     
+    /**
+     *
+     * @var int 
+     */
+    protected $beanQueryLimit;
+    
+    /**
+     *
+     * @var int
+     */
+    protected $beanQueryOffset;
+    
     /**
      * 
      * @param ISqlQuery $sqlQuery datenbankabhängiger Querybuilder
@@ -162,9 +175,7 @@ abstract class BeanQuery {
      * @param int $limit
      * @param int $offset
      */
-    public function limitAndOffset($limit, $offset) {
-        throw new Exception("todo: reimplementation required");
-    }
+    public abstract function limitAndOffset(int $limit,int $offset,string $condition = null,$params = null);
 
     /**
      * 
@@ -175,11 +186,7 @@ abstract class BeanQuery {
         throw new Exception("todo: reimplementation required");
     }
 
-    public function query() {
-      //  print_r($this->getDebugString());
-        return $this->sqlQuery->query();
-    }
-   
+     
     public function getDebugString() {
         return $this->sqlQuery->getDebugString();
     }
