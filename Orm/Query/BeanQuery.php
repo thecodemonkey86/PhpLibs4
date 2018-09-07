@@ -218,6 +218,10 @@ abstract class BeanQuery {
     public function __toString() {
         return $this->sqlQuery->toString();
     }
+    
+    public function execute() : bool  {
+        return $this->sqlQuery->execute();
+    }
 	
 	public function delete() {
 		$this->sqlQuery->deleteFrom($this->getTableName(). ' b1');
