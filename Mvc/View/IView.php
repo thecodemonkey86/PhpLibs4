@@ -5,4 +5,5 @@ interface IView {
 
     public function update($data); 
     
+    public function getHttpContentType();
 }

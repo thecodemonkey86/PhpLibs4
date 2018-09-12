@@ -15,6 +15,7 @@ abstract class AbstractController {
     }
 
     public function runController() {
+        header('Content-Type: ' . $this->view->getHttpContentType());
         $this->view->update($this->run());
     }
         
