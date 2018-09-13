@@ -14,7 +14,7 @@ abstract class BeanQuery {
     
     /**
      *
-     * @var ISqlQuery 
+     * @var \PhpLibs\Sql\Query\SqlQuery 
      */
     protected $sqlQuery;
 
@@ -33,7 +33,7 @@ abstract class BeanQuery {
     
     /**
      * 
-     * @param ISqlQuery $sqlQuery datenbankabhängiger Querybuilder
+     * @param \PhpLibs\Sql\Query\SqlQuery $sqlQuery datenbankabhängiger Querybuilder
      */
     public function __construct(\PhpLibs\Sql\Query\SqlQuery $sqlQuery) {
         $this->sqlQuery = $sqlQuery;

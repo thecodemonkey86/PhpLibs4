@@ -365,5 +365,13 @@ abstract class SqlQuery {
     }
     
     
+    public function getMode() {
+        return $this->mode;
+    }
+
+    public function getSubmode() {
+        return $this->submode;
+    }
+
 
 }
