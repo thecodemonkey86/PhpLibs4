@@ -15,8 +15,11 @@ abstract class AbstractController {
     }
 
     public function runController() {
-        header('Content-Type: ' . $this->view->getHttpContentType());
-        $this->view->update($this->run());
+        if($this->view !== null)
+            header('Content-Type: ' . $this->view->getHttpContentType());
+        $viewData = $this->run();
+        if($viewData !== null)
+            $this->view->update($viewData);
     }
         
     public function redirect($location) {
@@ -25,7 +28,7 @@ abstract class AbstractController {
     }
     
     /**
-     * @return \PhpLibs\Mvc\ViewData\ViewData data
+     * @return \PhpLibs\Mvc\ViewData data
      */
     protected abstract function run();
 }

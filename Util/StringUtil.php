@@ -8,6 +8,10 @@ class StringUtil {
         return (strlen($string) >= strlen($startswith) && substr($string, 0, strlen($startswith)) == $startswith);
     }
 
+    public static function endsWith($string, $endswith) {
+        return (strlen($string) >= strlen($endswith) && substr($string, strlen($string) - strlen($endswith)) == $endswith);
+    }
+
     public static function replaceFirst($search, $replace, $subject) {
         $k = strpos($subject, $search);
         if ($k !== false) {

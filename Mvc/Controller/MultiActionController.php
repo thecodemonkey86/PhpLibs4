@@ -5,7 +5,8 @@ namespace PhpLibs\Mvc\Controller;
 class MultiActionController extends AbstractController {
 
     protected $actionViews;
-
+    protected $defaultAction;
+    
     public function __construct() {
         $this->actionViews = array();
     }
@@ -18,26 +19,45 @@ class MultiActionController extends AbstractController {
         $this->actionViews[$action] = $view;
     }
 
-    public function runController() {
-        if (isset($_GET['action']) && isset($this->actionViews[$_GET['action']])) {
-            $view = $this->actionViews[$_GET['action']];
-            header('Content-Type: ' . $view->getHttpContentType());
-            $view->update($this->run());
-        }
+    public function redirectAction($action) {
+        header('Location: ' . \PhpLibs\Web\Url::current()->addParam('action', $action)->__toString());
+        die;
     }
+    
 
-    //put your code here
     protected function run() {
+        $action = $this->defaultAction;
+        
+        if (isset($_GET['action'])) {
+           $action = $_GET['action'];
+        }
+        
         $cls = new \ReflectionClass(get_class($this));
-        $methodName = $_GET['action'] . 'Action';
-      
+        $methodName = $action . 'Action';
+
         if ($cls->hasMethod($methodName)) {
             $method = $cls->getMethod($methodName);
             if ($method->isPublic()) {
-                return $method->invoke($this);
+                if (isset($this->actionViews[$action])) {
+                    $view = $this->actionViews[$action];
+                    header('Content-Type: ' . $view->getHttpContentType());
+                    return $view->update($method->invoke($this));
+                } else {
+                    $method->invoke($this);
+                }
             }
         }
         return null;
     }
+    
+    public function getDefaultAction() {
+        return $this->defaultAction;
+    }
+
+    public function setDefaultAction($defaultAction) {
+        $this->defaultAction = $defaultAction;
+    }
+
+
 
 }

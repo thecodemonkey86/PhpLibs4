@@ -35,5 +35,9 @@ abstract class HtmlTemplate implements IView {
     protected function renderFooter() {
         echo '</body></html>';
     }
+    
+    public function getHttpContentType() {
+        return \PhpLibs\Web\HttpHeader::CONTENT_TYPE_TEXT_HTML;
+    }
 
 }
