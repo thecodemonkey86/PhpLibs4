@@ -22,7 +22,7 @@ abstract class AbstractController {
             $this->view->update($viewData);
     }
         
-    public function redirect($location) {
+    public static function redirect($location) {
         header('Location: ' . $location);
         die;
     }
