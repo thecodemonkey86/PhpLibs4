@@ -27,5 +27,14 @@ class StringUtil {
         }
         return substr($result, strlen($separator));
     }
+    
+    public static function randomString($length, $chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789') {
+        srand();
+        $str = str_repeat(' ', $length);
+        for($i=0;$i<$length;$i++) {
+            $str[$i] = $chars[rand(0, strlen($chars)- 1)];
+        }
+        return $str;
+    }
 
 }

@@ -174,7 +174,7 @@ class MySqlQuery extends SqlQuery {
             $stmt->close();
             return $result;
         } else {
-            return $this->sqlCon->execute($this->getSqlString());
+            return $this->sqlCon->query($this->getSqlString());
         }
     }
 
