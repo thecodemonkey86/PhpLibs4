@@ -61,7 +61,7 @@ class SqlParam {
     }
 
     public function __toString() {
-        return $this->value;
+        return ($this->value !== null ? (string)$this->value : 'null');
     }
 
 }
