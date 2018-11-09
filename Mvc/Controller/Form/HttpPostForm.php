@@ -2,6 +2,8 @@
 
 namespace PhpLibs\Mvc\Controller\Form;
 
+use PhpLibs\Mvc\Controller\Form\Validator\DateValidator;
+
 /**
  * Stellt Funktionalität zum Prüfen von Inputfeldern bereit. Arbeitet mit Exceptions, falls ungültige Werte übergeben werden
  */
