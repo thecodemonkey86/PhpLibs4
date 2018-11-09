@@ -148,7 +148,12 @@ class FirebirdSqlQuery extends SqlQuery {
                 $stmt = ibase_prepare($this->sqlCon, $this->getSqlString());
             }
             array_unshift($params, $stmt);
-            return call_user_func_array('ibase_execute', $params);
+            $res = call_user_func_array('ibase_execute', $params);
+            if(!$res) {
+                @file_put_contents('log/' . microtime(true) .'debug.txt', print_r(array($this->getSqlString(),$params,$res,$e->getTraceAsString() ),true));
+                throw new \Exception();
+            }
+            return $res ;
         } else {
             return ibase_query($this->sqlCon, $this->getSqlString());
         }
