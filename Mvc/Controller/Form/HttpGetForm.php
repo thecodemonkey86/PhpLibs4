@@ -7,7 +7,7 @@ use PhpLibs\Mvc\Controller\Form\Validator\DateValidator;
 /**
  * Stellt Funktionalität zum Prüfen von Inputfeldern bereit. Arbeitet mit Exceptions, falls ungültige Werte übergeben werden
  */
-abstract class HttpPostForm {
+abstract class HttpGetForm {
 
     protected $fieldValidators;
     protected $submit;
@@ -24,9 +24,9 @@ abstract class HttpPostForm {
 
     public function getValue($fieldName, $default = "") {
         if (isset($this->fieldValidators[$fieldName])) {
-            return $this->fieldValidators[$fieldName]->getValidatedValue((isset($_POST[$fieldName]) ? $_POST[$fieldName] : $default));
+            return $this->fieldValidators[$fieldName]->getValidatedValue((isset($_GET[$fieldName]) ? $_GET[$fieldName] : $default));
         }
-        return (isset($_POST[$fieldName]) ? $_POST[$fieldName] : $default);
+        return (isset($_GET[$fieldName]) ? $_GET[$fieldName] : $default);
     }
 
     public function isObligatory($fieldName) {
