@@ -219,8 +219,11 @@ abstract class BeanQuery {
         return $this->sqlQuery->toString();
     }
     
-    public function execute() : bool  {
-        return $this->sqlQuery->execute();
+	/**
+	* throws Exception on failure
+	*/
+    public function execute()  {
+        $this->sqlQuery->execute();
     }
 	
 	public function delete() {

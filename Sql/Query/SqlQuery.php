@@ -285,9 +285,9 @@ abstract class SqlQuery {
     public abstract function query();
 
     /**
-     * @return bool success
+     * @throws Exception on failure
      */
-    public abstract function execute() : bool ;
+    public abstract function execute() ;
 
     public function getDebugString() {
         $sql = $this->__toString();

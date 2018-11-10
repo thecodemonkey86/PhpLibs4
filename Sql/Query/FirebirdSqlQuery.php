@@ -137,7 +137,7 @@ class FirebirdSqlQuery extends SqlQuery {
         return $this->sqlCon->error;
     }
 
-    public function execute(): bool {
+    public function execute()  {
         $params = $this->getParams();
         if (count($params) > 0) {
             $stmt = null;
@@ -151,9 +151,8 @@ class FirebirdSqlQuery extends SqlQuery {
             $res = call_user_func_array('ibase_execute', $params);
             if(!$res) {
                 @file_put_contents('log/' . microtime(true) .'debug.txt', print_r(array($this->getSqlString(),$params,$res,$e->getTraceAsString() ),true));
-                throw new \Exception();
-            }
-            return $res ;
+                $this->throwException();
+            }            
         } else {
             return ibase_query($this->sqlCon, $this->getSqlString());
         }

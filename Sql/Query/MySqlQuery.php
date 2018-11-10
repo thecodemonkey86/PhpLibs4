@@ -151,7 +151,7 @@ class MySqlQuery extends SqlQuery {
         return $this->sqlCon->error;
     }
 
-    public function execute(): bool {
+    public function execute() {
         $params = $this->getParams();
         if (count($params) > 0) {
             $stmt = $this->sqlCon->prepare($this->getSqlString());
@@ -172,7 +172,9 @@ class MySqlQuery extends SqlQuery {
             $stmt->bind_param($type, ...$params);
             $result = $stmt->execute();
             $stmt->close();
-            return $result;
+            if(!$result) {
+				 $this->throwException();
+			}
         } else {
             return $this->sqlCon->query($this->getSqlString());
         }

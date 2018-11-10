@@ -101,8 +101,8 @@ class PgSqlQuery extends SqlQuery {
         return $this->sqlCon->error;
     }
 
-    public function execute(): bool {
-        
+    public function execute() {
+        throw new \Exception('not yet implemented');
     }
 
 }
