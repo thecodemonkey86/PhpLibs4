@@ -150,7 +150,11 @@ class FirebirdSqlQuery extends SqlQuery {
             array_unshift($params, $stmt);
             $res = call_user_func_array('ibase_execute', $params);
             if(!$res) {
-                @file_put_contents('log/' . microtime(true) .'debug.txt', print_r(array($this->getSqlString(),$params,$res,$e->getTraceAsString() ),true));
+                try {
+                    throw new \Exception();
+                } catch ( \Exception $e) {
+                     @file_put_contents('log/' . microtime(true) .'debug.txt', print_r(array($this->getSqlString(),$params,$res,$e->getTraceAsString() ),true));
+                }              
                 $this->throwException();
             }            
         } else {
